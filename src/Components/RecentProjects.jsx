@@ -1,6 +1,8 @@
 import { motion } from "motion/react";
 import { FiExternalLink, FiGithub } from "react-icons/fi";
 
+const ease = [0.22, 1, 0.36, 1];
+
 const projects = [
   {
     id: "01",
@@ -42,36 +44,27 @@ const ProjectCard = ({ project, index }) => {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1],
-        delay: index * 0.1,
+      transition={{ duration: 0.6, delay: index * 0.1, ease }}
+      whileHover={{
+        y: -6,
+        borderColor: accent + "50",
+        boxShadow: `0 8px 40px ${accent}20`,
       }}
-      className="group relative border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+      className="group relative border border-white/10 rounded-2xl overflow-hidden h-full"
       style={{ background: "rgba(255,255,255,0.03)" }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = accent + "40";
-        e.currentTarget.style.boxShadow = `0 0 30px ${accent}15`;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-        e.currentTarget.style.boxShadow = "none";
-      }}
     >
       {/* Top accent line */}
       <div
         className="absolute top-0 left-0 right-0 h-[2px] z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{
-          background: `linear-gradient(to right, transparent, ${accent}, transparent)`,
-        }}
+        style={{ background: `linear-gradient(to right, transparent, ${accent}, transparent)` }}
       />
 
-      {/* Image Section */}
+      {/* Image */}
       <div className="relative overflow-hidden border-b border-white/10 h-48">
         <img
           src={image}
           alt={title}
-          className="w-[500px] h-[170px] object-cover object-top transition-all duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
           style={{ filter: "brightness(0.85) saturate(0.9)" }}
         />
         <div
@@ -81,32 +74,21 @@ const ProjectCard = ({ project, index }) => {
       </div>
 
       <div className="p-5">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3">
           <span
             className="text-xs font-mono font-medium px-3 py-1 rounded-full border"
-            style={{
-              color: accent,
-              borderColor: accent + "30",
-              background: accent + "10",
-            }}
+            style={{ color: accent, borderColor: accent + "30", background: accent + "10" }}
           >
             {id}
           </span>
         </div>
 
-        {/* Title */}
-        <h3
-          className="text-lg font-bold text-white mb-2"
-          style={{ fontFamily: "'Syne', sans-serif" }}
-        >
+        <h3 className="text-lg font-bold text-white mb-2" style={{ fontFamily: "'Syne', sans-serif" }}>
           {title}
         </h3>
 
-        {/* Description */}
         <p className="text-white/45 text-sm leading-relaxed mb-4">{desc}</p>
 
-        {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-5">
           {tags.map((tag) => (
             <span
@@ -119,21 +101,17 @@ const ProjectCard = ({ project, index }) => {
           ))}
         </div>
 
-        {/* Links */}
         <div className="flex items-center gap-3">
           <a
             href={live}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl transition-all duration-200"
+            className="flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl hover:opacity-85 transition-opacity duration-200"
             style={{ background: accent, color: "#0B0F14" }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
             <FiExternalLink size={13} />
             Live Demo
           </a>
-
           <a
             href={github}
             target="_blank"
@@ -154,38 +132,40 @@ const Projects = () => {
   return (
     <section className="bg-[#0B0F14] py-20 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-14"
-        >
-          <p className="text-[#00d4ff] text-xs tracking-[0.2em] uppercase font-medium mb-3">
+
+        <div className="text-center mb-14">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1, ease }}
+            className="text-[#00d4ff] text-xs tracking-[0.2em] uppercase font-medium mb-3"
+          >
             My Work
-          </p>
-          <h2
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.22, ease }}
             className="text-4xl md:text-5xl font-extrabold text-white"
             style={{ fontFamily: "'Syne', sans-serif" }}
           >
             Latest Projects
-          </h2>
-        </motion.div>
+          </motion.h2>
+        </div>
 
-        {/* Grid — sm:1, md:2, lg:3 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {projects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
 
-        {/* View All */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.3, ease }}
           className="text-center mt-10"
         >
           <a
@@ -198,6 +178,7 @@ const Projects = () => {
             View All on GitHub
           </a>
         </motion.div>
+
       </div>
     </section>
   );
