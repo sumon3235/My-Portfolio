@@ -1,6 +1,8 @@
 import { motion } from "motion/react";
 import { FiMonitor, FiDatabase, FiLock, FiSmartphone, FiUploadCloud, FiZap } from "react-icons/fi";
 
+const ease = [0.22, 1, 0.36, 1];
+
 const services = [
   {
     icon: FiMonitor,
@@ -46,23 +48,22 @@ const services = [
   },
 ];
 
-const ServiceCard = ({ service }) => {
+const ServiceCard = ({ service, index }) => {
   const { icon: Icon, title, desc, features, accent } = service;
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease }}
+      whileHover={{
+        y: -6,
+        borderColor: accent + "50",
+        boxShadow: `0 8px 30px ${accent}18`,
+      }}
       className="group relative border border-white/10 rounded-2xl p-7 cursor-default overflow-hidden"
-      style={{ background: "rgba(255,255,255,0.03)", transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s" }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = accent + "50";
-        e.currentTarget.style.boxShadow = `0 0 25px ${accent}12`;
-        e.currentTarget.style.transform = "translateY(-4px)";
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-        e.currentTarget.style.boxShadow = "none";
-        e.currentTarget.style.transform = "translateY(0)";
-      }}
+      style={{ background: "rgba(255,255,255,0.03)" }}
     >
       {/* Top accent line */}
       <div
@@ -78,18 +79,12 @@ const ServiceCard = ({ service }) => {
         <Icon style={{ color: accent, fontSize: "20px" }} />
       </div>
 
-      {/* Title */}
-      <h3
-        className="text-white font-bold text-base mb-2"
-        style={{ fontFamily: "'Syne', sans-serif" }}
-      >
+      <h3 className="text-white font-bold text-base mb-2" style={{ fontFamily: "'Syne', sans-serif" }}>
         {title}
       </h3>
 
-      {/* Desc */}
       <p className="text-white/40 text-sm leading-relaxed mb-5">{desc}</p>
 
-      {/* Features */}
       <div className="flex flex-col gap-2">
         {features.map(feat => (
           <div key={feat} className="flex items-center gap-2">
@@ -98,7 +93,7 @@ const ServiceCard = ({ service }) => {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -107,37 +102,33 @@ const Services = () => {
     <section className="bg-[#0B0F14] py-20 px-4">
       <div className="max-w-5xl mx-auto">
 
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="text-center mb-14"
-        >
-          <p className="text-[#00d4ff] text-xs tracking-[0.2em] uppercase font-medium mb-3">
+        <div className="text-center mb-14">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1, ease }}
+            className="text-[#00d4ff] text-xs tracking-[0.2em] uppercase font-medium mb-3"
+          >
             What I Offer
-          </p>
-          <h2
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.22, ease }}
             className="text-4xl md:text-5xl font-extrabold text-white"
             style={{ fontFamily: "'Syne', sans-serif" }}
           >
             My Services
-          </h2>
-        </motion.div>
+          </motion.h2>
+        </div>
 
-        {/* Grid — সব ৬টা একসাথে আসবে */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        >
-          {services.map((service) => (
-            <ServiceCard key={service.title} service={service} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {services.map((service, index) => (
+            <ServiceCard key={service.title} service={service} index={index} />
           ))}
-        </motion.div>
+        </div>
 
       </div>
     </section>
